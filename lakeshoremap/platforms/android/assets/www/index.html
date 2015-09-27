@@ -1,13 +1,37 @@
 <html>
+<head>
+ <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script src="../www/openseadragon/openseadragon.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+
+</head>
+
+
 <body>
 
-	<div id="openseadragon1" style="width: 800px; height: 600px;"></div>
-<script src="../www/openseadragon/openseadragon.min.js"></script>
-<script type="text/javascript">
-    var viewer = OpenSeadragon({
-        id: "openseadragon1",
-        prefixUrl: "../www/openseadragon/images/",
-        tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
-    });
-</script></body>
+<div id="mapContainer">	
+	<!-- Opeanseadragon div- necessary to show the map -->
+	<div id="openseadragon1" style="width: 400px; height: 500px;"></div>  
+
+	<script type="text/javascript">
+	    var viewer = OpenSeadragon({
+	        id: "openseadragon1",
+	        prefixUrl: "../www/openseadragon/images/",
+	        tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
+	    });
+	</script>
+
+<a class="btn-floating  btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
+</div>  
+
+</body>
 </html>

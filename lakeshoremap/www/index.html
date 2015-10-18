@@ -1,28 +1,65 @@
 <html>
 <head>
- <!--Import Google Icon Font-->
-      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script src="../www/openseadragon/openseadragon.min.js"></script>
-      <script type="text/javascript" src="js/materialize.min.js"></script>
+	<!--Import Google Icon Font-->
+	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<!--Import jQuery before materialize.js-->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="../www/openseadragon/openseadragon.min.js"></script>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
 </head>
 <body>
-<div id="mapContainer">	
-	<!-- Opeanseadragon div- necessary to show the map -->
-	<div id="openseadragon1" style="width: 400px; height: 500px;"></div>  
+	<div id="mapContainer">	
+		<!-- Opeanseadragon div- necessary to show the map -->
+		<div id="openseadragon1" style="width: 600px; height: 800px;"></div>  
+		<script type="text/javascript">
+		var viewer = OpenSeadragon({
+			id: "openseadragon1",
+			prefixUrl: "../www/openseadragon/images/",
+			tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml",
+			debugMode:  true
+		});
+		</script>
+	</div>  
+	<div id="test"></div>
 	<script type="text/javascript">
-	    var viewer = OpenSeadragon({
-	        id: "openseadragon1",
-	        prefixUrl: "../www/openseadragon/images/",
-	        tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
-	    });
-	</script>
-<a class="btn-floating  btn-large waves-effect waves-light red right"><i class="material-icons">add</i></a>
-</div>  
+
+	viewer.addHandler('canvas-click', function(target, info) {
+
+       var tracker = new OpenSeadragon.MouseTracker({
+           element: viewer.container,
+            move
+            Handler: function(event) {
+           	var webPoint = event.position;
+           	var viewportPoint = viewer.viewport.pointFromPixel(webPoint);
+           	var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
+           	var zoom = viewer.viewport.getZoom(true);
+           	var imageZoom = viewer.viewport.viewportToImageZoom(zoom);
+
+           	document.getElementById("test").innerHTML = 'Web:<br>' + webPoint.toString() + 
+           	'<br><br>Viewport:<br>' + viewportPoint.toString() +
+           	'<br><br>Image:<br>' + imagePoint.toString();
+
+
+           	if((viewportPoint.x<0.6 && viewportPoint.x > 0.5)&&(viewportPoint.y<0.83 && viewportPoint.y>0.74)){
+
+           		document.getElementById("test").innerHTML = "Cuneo Hall";
+           	}else{
+
+           		document.getElementById("test").innerHTML = "";
+           	}
+          }
+       });  
+
+        tracker.setTracking(true);  
+
+
+   });
+
+</script>
+
 </body>
 </html>

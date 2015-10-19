@@ -27,12 +27,12 @@
 	<div id="test"></div>
 	<script type="text/javascript">
 
-	viewer.addHandler('canvas-click', function(target, info) {
+	
+viewer.addHandler('canvas-click', function(target, info) {
 
        var tracker = new OpenSeadragon.MouseTracker({
            element: viewer.container,
-            move
-            Handler: function(event) {
+            moveHandler: function(event) {
            	var webPoint = event.position;
            	var viewportPoint = viewer.viewport.pointFromPixel(webPoint);
            	var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
@@ -42,15 +42,6 @@
            	document.getElementById("test").innerHTML = 'Web:<br>' + webPoint.toString() + 
            	'<br><br>Viewport:<br>' + viewportPoint.toString() +
            	'<br><br>Image:<br>' + imagePoint.toString();
-
-
-           	if((viewportPoint.x<0.6 && viewportPoint.x > 0.5)&&(viewportPoint.y<0.83 && viewportPoint.y>0.74)){
-
-           		document.getElementById("test").innerHTML = "Cuneo Hall";
-           	}else{
-
-           		document.getElementById("test").innerHTML = "";
-           	}
           }
        });  
 

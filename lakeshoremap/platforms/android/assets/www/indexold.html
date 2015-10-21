@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAC_eLNZRFKb3Rz-DRGMSbJIYwAejtm-Gs"></script>
+
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- temporarily moved to head whilst we develop app...-->
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(initialize);
+var map;
+
+//center of the map
+var myCenter=new google.maps.LatLng(41.9988543,-87.6556353);
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:16,
+  disableDefaultUI: true,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+//variable cointaining building information
+var buildings = {
+    "buildings": {
+        "building": [
+            {
+                "id": "19",
+                "name": "Cuneo Hall",
+                "description": "nice building",
+                "img": "cuneo.png",
+                "lat": 41.9984403,
+                "longi": -87.6582376
+            },
+            { 
+                "id": "3",
+                "name": "Information Commons",
+                "description": "has library",
+                "img": "IC.png",
+                "lat": 41.999941,
+                "longi": -87.6564161
+            }
+        ]
+    }
+};
+
+//setting map
+var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+var markers = [];
+var infowindows = [];
+
+//setting markers on the map
+for (var i = 0; i < buildings.buildings.building.length; i++) {
+  var point =new google.maps.LatLng(buildings.buildings.building[i].lat,buildings.buildings.building[i].longi);
+  var marker = new google.maps.Marker({
+    position: point,
+    map: map
+  });
+  markers.push(marker);
+    markers[i].setMap(map);
+  }
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+
+
+
+//setting listeners on the map
+for (var i = 0; i < markers.length; i++) {
+  var infowindow = new google.maps.InfoWindow({
+  content: buildings.buildings.building[i].description
+  });
+  infowindows.push(infowindow);
+
+}
+for (var i = 0; i < markers.length; i++) {
+ google.maps.event.addListener(markers[i], 'click', (function(i) {
+        return function() {
+          infowindows[i].open(map,markers[i]);
+        }
+      })(i));
+}
+
+
+
+
+
+
+
+}
+
+
+  function crtSearchBox() {
+    var result = "";
+    result += "<ul data-role='listview' data-filter='true' data-filter-reveal='true'"+
+      "data-filter-placeholder='Search buildings...' data-inset='true'>"+ 
+      "<li><a href='#' onClick=" + showBuilding() + ">build1</a></li></u1>";
+
+    return result;
+}
+
+
+
+function showBuilding(){
+  var point =new google.maps.LatLng(42.0,-87.6956353);
+  var marker = new google.maps.Marker({
+    position: point,
+    map: map
+  });
+  marker.setMap();
+
+}
+
+
+
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+
+
+<body>
+
+<div data-role="page" id="page1">
+
+  <div data-role="header" data-position-fixed="true">
+   <h1>TDT</h1>
+  </div><!-- /header -->
+
+  <div role="main" class="ui-content" >
+        
+<div id = "searchBox">
+  
+<ul data-role='listview' data-filter='true' data-filter-reveal='true' data-filter-placeholder='Search buildings...' data-inset='true'> 
+    <li><a href='#' >build1</a></li>
+</u1>
+
+</div>
+    <div id="googleMap" style="width:500px;height:380px;"></div>
+  </div><!-- /content -->
+
+
+
+
+    <div data-role="panel" data-display="overlay" id="bars" >
+    <ul data-role="listview">
+        <li>Acura</li>
+        <li>Audi</li>
+        <li>BMW</li>
+        <li>Cadillac</li>
+        <li>Ferrari</li>
+    </ul>
+      
+  </div><!-- /panel -->
+</div><!-- /page -->
+
+
+
+
+
+<script type="text/javascript"> 
+
+
+
+</script>
+
+
+
+
+</body>
+</html>
+
+
+
+

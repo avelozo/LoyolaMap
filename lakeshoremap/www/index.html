@@ -1,56 +1,299 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<!--Import Google Icon Font-->
-	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<!--Import materialize.css-->
-	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-	<!--Let browser know website is optimized for mobile-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<!--Import jQuery before materialize.js-->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="../www/openseadragon/openseadragon.min.js"></script>
-	<script type="text/javascript" src="js/materialize.min.js"></script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAC_eLNZRFKb3Rz-DRGMSbJIYwAejtm-Gs"></script>
+
+<meta name="format-detection" content="telephone=no">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<!-- temporarily moved to head whilst we develop app...-->
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="json/buildings.json"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+
+<script type="text/javascript">
+
+var overlay;
+USGSOverlay.prototype = new google.maps.OverlayView();
+
+//center of the map
+var myCenter=new google.maps.LatLng(41.9988543,-87.6556353);
+//variable cointaining building information
+
+
+
+var currentBuilding;
+
+
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:16,
+  disableDefaultUI: true,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+var markers = [];
+var infowindows = [];
+
+//setting map
+map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+
+//setting markers on the map
+for (var i = 0; i < buildings.buildings.building.length; i++) {
+  var point =new google.maps.LatLng(buildings.buildings.building[i].lat,buildings.buildings.building[i].longi);
+  var marker = new google.maps.Marker({
+    position: point,
+    map: map
+  });
+  markers.push(marker);
+  markers[i].setMap(map);
+  }
+
+
+
+
+//setting listeners on the map
+for (var i = 0; i < markers.length; i++) {
+  var infowindow = new google.maps.InfoWindow({
+  content: buildings.buildings.building[i].description
+  });
+  infowindows.push(infowindow);
+
+}
+for (var i = 0; i < markers.length; i++) {
+ google.maps.event.addListener(markers[i], 'click', (function(i) {
+        return function() {
+          infowindows[i].open(map,markers[i]);
+        }
+      })(i));
+}
+
+  var imageBounds = {
+    north: 42.0027041,
+    south: 41.9946522,
+    east: -87.6535342,
+    west: -87.6618519
+  };
+
+    var bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(imageBounds.south, imageBounds.west),
+      new google.maps.LatLng(imageBounds.north, imageBounds.east));
+
+  // The photograph is courtesy of the U.S. Geological Survey.
+  var srcImage = 'img/lsc.jpg';
+  // var srcImage = 'https://developers.google.com/maps/documentation/' +
+  //     'javascript/examples/full/images/talkeetna.png';
+  overlay = new USGSOverlay(bounds, srcImage, map);
+
+
+}
+
+
+function showBuilding(){
+  var point = new google.maps.LatLng(41.99875,-87.6564161);
+  var marker = new google.maps.Marker({
+    position: point,
+    icon: 'img/red_star.png',
+    map: map
+  });
+  marker.setMap(map);
+
+}
+
+function USGSOverlay(bounds, image, map) {
+
+  // Initialize all properties.
+  this.bounds_ = bounds;
+  this.image_ = image;
+  this.map_ = map;
+
+  // Define a property to hold the image's div. We'll
+  // actually create this div upon receipt of the onAdd()
+  // method so we'll leave it null for now.
+  this.div_ = null;
+
+  // Explicitly call setMap on this overlay.
+  this.setMap(map);
+}
+// [END region_constructor]
+
+// [START region_attachment]
+/**
+ * onAdd is called when the map's panes are ready and the overlay has been
+ * added to the map.
+ */
+USGSOverlay.prototype.onAdd = function() {
+
+  var div = document.createElement('div');
+  div.style.borderStyle = 'none';
+  div.style.borderWidth = '0px';
+  div.style.position = 'absolute';
+
+  // Create the img element and attach it to the div.
+  var img = document.createElement('img');
+  img.src = this.image_;
+  img.style.width = '100%';
+  img.style.height = '100%';
+  img.style.position = 'absolute';
+  div.appendChild(img);
+
+  this.div_ = div;
+
+  // Add the element to the "overlayLayer" pane.
+  var panes = this.getPanes();
+  panes.overlayLayer.appendChild(div);
+};
+// [END region_attachment]
+
+// [START region_drawing]
+USGSOverlay.prototype.draw = function() {
+
+  // We use the south-west and north-east
+  // coordinates of the overlay to peg it to the correct position and size.
+  // To do this, we need to retrieve the projection from the overlay.
+  var overlayProjection = this.getProjection();
+
+  // Retrieve the south-west and north-east coordinates of this overlay
+  // in LatLngs and convert them to pixel coordinates.
+  // We'll use these coordinates to resize the div.
+  var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
+  var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
+
+  // Resize the image's div to fit the indicated dimensions.
+  var div = this.div_;
+  div.style.left = sw.x + 'px';
+  div.style.top = ne.y + 'px';
+  div.style.width = (ne.x - sw.x) + 'px';
+  div.style.height = (sw.y - ne.y) + 'px';
+};
+// [END region_drawing]
+
+// [START region_removal]
+// The onRemove() method will be called automatically from the API if
+// we ever set the overlay's map property to 'null'.
+USGSOverlay.prototype.onRemove = function() {
+  this.div_.parentNode.removeChild(this.div_);
+  this.div_ = null;
+};
+
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 </head>
+
+
 <body>
-	<div id="mapContainer">	
-		<!-- Opeanseadragon div- necessary to show the map -->
-		<div id="openseadragon1" style="width: 600px; height: 800px;"></div>  
-		<script type="text/javascript">
-		var viewer = OpenSeadragon({
-			id: "openseadragon1",
-			prefixUrl: "../www/openseadragon/images/",
-			tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml",
-			debugMode:  true
-		});
-		</script>
-	</div>  
-	<div id="test"></div>
-	<script type="text/javascript">
 
-	
-viewer.addHandler('canvas-click', function(target, info) {
+<div data-role="page" id="homePage">
 
-       var tracker = new OpenSeadragon.MouseTracker({
-           element: viewer.container,
-            moveHandler: function(event) {
-           	var webPoint = event.position;
-           	var viewportPoint = viewer.viewport.pointFromPixel(webPoint);
-           	var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint);
-           	var zoom = viewer.viewport.getZoom(true);
-           	var imageZoom = viewer.viewport.viewportToImageZoom(zoom);
+  <div data-role="header" data-position-fixed="true">
+   <h1>TDT</h1>
+  </div><!-- /header -->
 
-           	document.getElementById("test").innerHTML = 'Web:<br>' + webPoint.toString() + 
-           	'<br><br>Viewport:<br>' + viewportPoint.toString() +
-           	'<br><br>Image:<br>' + imagePoint.toString();
-          }
-       });  
+  <div role="main" class="ui-content" >
 
-        tracker.setTracking(true);  
+        
+<div data-role="navbar">
+  <ul>
+    <li> <a href="#bars"class="ui-btn-active ui-state-persist">Menu</a></li>
+    <li><a href="#pageListBuilding">Search</a></li>
+    <!--  <li><a href="#bars" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all">No text</a></li> -->
+  </ul>
+</div><!-- /navbar -->
+
+<div id = "searchBox"></div>
+    <div id="googleMap" style="width:330px;height:480px;"></div>
+  </div><!-- /content -->
 
 
-   });
+
+
+    <div data-role="panel" data-display="overlay" id="bars" >
+    <ul data-role="listview">
+        <li> <a href = "#pageListBuilding">List of Buildings</a></li>
+        <li> <a href = "#">Where am I?</a></li>
+        <li> <a href = "#">Toggle Map</a></li>
+    </ul>
+      
+  </div><!-- /panel -->
+</div><!-- /page -->
+
+<div data-role="page" id="pageListBuilding">
+  <div data-role="header">
+    <h3>info</h3>
+  </div><!-- /header -->
+  <div role="main" class="ui-content">
+    <div id = "listBuilding">
+
+    </div>
+    
+  </div><!-- /content -->
+  <div data-role="footer" data-position="fixed"> 
+    <p><a data-rel="back">Return</a></p>
+    <h5>footer - building</h5>
+  </div><!-- /footer -->
+</div><!-- /page2 -->
+
+
+
+
+
+<script type="text/javascript"> 
+
+  function crtSearchBox() {
+    var result = "";
+    result += "<ul data-role= listview data-filter=true data-filter-reveal=true"+
+      " data-inset=true>"+ 
+      "<li><a href=# >build1</a></li></u1>";
+
+    return result;
+}
+
+function createListBuilding(buildingsJson) {
+
+  var result = "<form class='ui-filterable'><input id='filterBasic-input' data-type='search'></form>";
+  result += "<ul data-role= listview data-filter='true' data-input='#filterBasic-input'> ";
+  for(var i=0; i<buildingsJson.length; i++) {
+    result += "<li><a href='#homePage' onClick ='showBuilding()'>"+ buildingsJson[i].name;
+    result += "</a></li>";
+    }
+  
+  result +="</ul>;"
+
+
+    return result;
+}
+var total = createListBuilding(buildings.buildings.building);
+document.getElementById('listBuilding').innerHTML = total;
+
+
+
+
+
+
+
+
+
 
 </script>
 
+
+
+
 </body>
 </html>
+
+
+
+

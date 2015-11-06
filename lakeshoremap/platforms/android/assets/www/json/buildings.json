@@ -1,0 +1,38 @@
+var buildings = {
+    "buildings": {
+        "building": [
+            {
+                "id": "19",
+                "name": "Cuneo Hall",
+                "description": "This is the description about Cuneo Hall",
+                "img": "cuneo.png",
+                "lat": 41.9984403,
+                "longi": -87.6582376
+            },
+                        {
+                "id": "20",
+                "name": "Loyola Hall",
+                "description": "nicee building",
+                "img": "cuneo.png",
+                "lat": 41.9984403,
+                "longi": -87.6582376
+            },
+                        {
+                "id": "21",
+                "name": "Information Commons",
+                "description": "nice building",
+                "img": "cuneo.png",
+                "lat": 41.9984403,
+                "longi": -87.6582376
+            },
+            { 
+                "id": "22",
+                "name": "Cudahy Library",
+                "description": "This is the description about Cudahy Library",
+                "img": "IC.png",
+                "lat": 41.999941,
+                "longi": -87.6564161
+            }
+        ]
+    }
+};

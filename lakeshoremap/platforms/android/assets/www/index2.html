@@ -1,0 +1,290 @@
+<!DOCTYPE html> 
+<html> 
+  <head> 
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAC_eLNZRFKb3Rz-DRGMSbJIYwAejtm-Gs" ></script>
+
+<!-- dynk - avoid the Â to appear-->
+<meta charset="utf-8">
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+
+<!-- temporarily moved to head whilst we develop app...-->
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="json/buildings.json"></script>
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+
+//setting overlay picture
+var overlay;
+USGSOverlay.prototype = new google.maps.OverlayView();
+
+//center of the map
+var myCenter=new google.maps.LatLng(41.9988543,-87.6556353);
+//variable cointaining building information
+
+//may be useful on future
+var currentBuilding;
+
+function initialize()
+{
+  //set map properties
+var mapProp = {
+  center:myCenter,
+  zoom:16,
+  disableDefaultUI: true,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+var markers = [];
+var infowindows = [];
+
+//setting map
+map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+
+
+//setting markers on the map
+for (var i = 0; i < buildings.buildings.building.length; i++) {
+  var point =new google.maps.LatLng(buildings.buildings.building[i].lat,buildings.buildings.building[i].longi);
+  var marker = new google.maps.Marker({
+    position: point,
+    map: map
+  });
+  markers.push(marker);
+  markers[i].setMap(map);
+  }
+
+
+//setting info window listeners on the map
+for (var i = 0; i < markers.length; i++) {
+  var infowindow = new google.maps.InfoWindow({
+  content: buildings.buildings.building[i].description
+  });
+  infowindows.push(infowindow);
+
+}
+for (var i = 0; i < markers.length; i++) {
+ google.maps.event.addListener(markers[i], 'click', (function(i) {
+        return function() {
+          infowindows[i].open(map,markers[i]);
+        }
+      })(i));
+}
+
+//image bounds
+  var imageBounds = {
+    north: 42.0027041,
+    south: 41.9946522,
+    east: -87.6535342,
+    west: -87.6618519
+  };
+
+    var bounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(imageBounds.south, imageBounds.west),
+      new google.maps.LatLng(imageBounds.north, imageBounds.east));
+
+  var srcImage = 'img/lsc.jpg';
+  overlay = new USGSOverlay(bounds, srcImage, map);
+
+
+}
+
+
+function showBuilding(){
+  //dynk - fixed one
+  var point = new google.maps.LatLng(41.99875,-87.6564161);
+  var marker = new google.maps.Marker({
+    position: point,
+    icon: 'img/red_star.png',
+    map: map
+  });
+  marker.setMap(map);
+}
+
+/** @constructor */
+function USGSOverlay(bounds, image, map) {
+
+  // Now initialize all properties.
+  this.bounds_ = bounds;
+  this.image_ = image;
+  this.map_ = map;
+
+  // Define a property to hold the image's div. We'll
+  // actually create this div upon receipt of the onAdd()
+  // method so we'll leave it null for now.
+  this.div_ = null;
+
+  // Explicitly call setMap on this overlay
+  this.setMap(map);
+}
+
+/**
+ * onAdd is called when the map's panes are ready and the overlay has been
+ * added to the map.
+ */
+USGSOverlay.prototype.onAdd = function() {
+
+  var div = document.createElement('div');
+  div.style.border = 'none';
+  div.style.borderWidth = '0px';
+  div.style.position = 'absolute';
+
+  // Create the img element and attach it to the div.
+  var img = document.createElement('img');
+  img.src = this.image_;
+  img.style.width = '100%';
+  img.style.height = '100%';
+  div.appendChild(img);
+
+  this.div_ = div;
+
+  // Add the element to the "overlayImage" pane.
+  var panes = this.getPanes();
+  panes.overlayImage.appendChild(this.div_);
+};
+
+USGSOverlay.prototype.draw = function() {
+
+  // We use the south-west and north-east
+  // coordinates of the overlay to peg it to the correct position and size.
+  // To do this, we need to retrieve the projection from the overlay.
+  var overlayProjection = this.getProjection();
+
+  // Retrieve the south-west and north-east coordinates of this overlay
+  // in LatLngs and convert them to pixel coordinates.
+  // We'll use these coordinates to resize the div.
+  var sw = overlayProjection.fromLatLngToDivPixel(this.bounds_.getSouthWest());
+  var ne = overlayProjection.fromLatLngToDivPixel(this.bounds_.getNorthEast());
+
+  // Resize the image's div to fit the indicated dimensions.
+  var div = this.div_;
+  div.style.left = sw.x + 'px';
+  div.style.top = ne.y + 'px';
+  div.style.width = (ne.x - sw.x) + 'px';
+  div.style.height = (sw.y - ne.y) + 'px';
+};
+
+USGSOverlay.prototype.onRemove = function() {
+  this.div_.parentNode.removeChild(this.div_);
+};
+
+// [START region_hideshow]
+// Set the visibility to 'hidden' or 'visible'.
+USGSOverlay.prototype.hide = function() {
+  if (this.div_) {
+    // The visibility property must be a string enclosed in quotes.
+    this.div_.style.visibility = 'hidden';
+  }
+};
+
+USGSOverlay.prototype.show = function() {
+  if (this.div_) {
+    this.div_.style.visibility = 'visible';
+  }
+};
+
+USGSOverlay.prototype.toggle = function() {
+  if (this.div_) {
+    if (this.div_.style.visibility === 'hidden') {
+      this.show();
+    } else {
+      this.hide();
+    }
+  }
+};
+
+// Detach the map from the DOM via toggleDOM().
+// Note that if we later reattach the map, it will be visible again,
+// because the containing <div> is recreated in the overlay's onAdd() method.
+USGSOverlay.prototype.toggleDOM = function() {
+  if (this.getMap()) {
+    // Note: setMap(null) calls OverlayView.onRemove()
+    this.setMap(null);
+  } else {
+    this.setMap(this.map_);
+  }
+};
+// [END region_hideshow]
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<div data-role="page" id="homePage">
+
+  <div data-role="header">
+    <h1>TDT</h1>
+    <a href="#bars" data-icon="gear" class="ui-btn-left">Options</a>
+  </div><!-- /header -->
+
+  <div role="main" class="ui-content" >
+     <div id="googleMap" style="width:330px;height:480px;"></div>   
+  </div><!-- /content -->
+
+    <div data-role="panel" data-display="overlay" id="bars" >
+    <ul data-role="listview">
+        <li> <a href = "#pageListBuilding">List of Buildings</a></li>
+        <li> <a href = "#">Where am I?</a></li>
+        <li> <a href = "#" onClick="overlay.toggle()">Toggle Map</a></li>
+    </ul>
+      
+  </div><!-- /panel -->
+
+</div><!-- /page -->
+
+<div data-role="page" id="pageListBuilding">
+  <div data-role="header">
+    <h3>info</h3>
+  </div><!-- /header -->
+  <div role="main" class="content">
+    <div id = "listBuilding">
+    </div>
+    
+  </div><!-- /content -->
+  <div data-role="footer" data-position="fixed"> 
+    <p><a data-rel="back">Return</a></p>
+    <h5>footer - building</h5>
+  </div><!-- /footer -->
+</div><!-- /page2 -->
+
+
+
+<script type="text/javascript"> 
+
+function createListBuilding(buildingsJson) {
+
+  var result = "<form class='ui-filterable'><input id='filterBasic-input' data-type='search'></form>";
+  result += "<ul data-role= listview data-filter='true' data-input='#filterBasic-input'> ";
+  for(var i=0; i<buildingsJson.length; i++) {
+    result += "<li><a href='#homePage' onClick ='showBuilding()'>"+ buildingsJson[i].name;
+    result += "</a></li>";
+    }
+  
+  result +="</ul>;"
+
+
+    return result;
+}
+var total = createListBuilding(buildings.buildings.building);
+document.getElementById('listBuilding').innerHTML = total;
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>

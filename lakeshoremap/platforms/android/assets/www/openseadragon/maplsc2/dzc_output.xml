@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Collection MaxLevel="8" TileSize="256" Format="png" NextItemId="1" ServerFormat="Default" xmlns="http://schemas.microsoft.com/deepzoom/2009">
-  <Items>
-    <I Id="0" N="0" Source="dzc_output_images/lsc.xml">
-      <Size Width="4989" Height="8649" />
-      <Viewport Width="1" X="-1" Y="-1" />
-    </I>
-  </Items>
-</Collection>

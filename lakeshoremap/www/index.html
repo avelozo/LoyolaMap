@@ -11,6 +11,21 @@
     </head> 
 <body> 
 
+<div data-role="page" id="home">
+  <div data-role="header">
+    <h1>Loyola Map</h1>
+  </div>
 
+  <div id="mapContainer"> 
+      <!-- Opeanseadragon div- necessary to show the map -->
+      <div id="openseadragon1" style="width: 600px; height: 800px;"></div>  
+          <script type="text/javascript">
+          var viewerOpen = OpenSeadragon({
+            id: "openseadragon1",
+            prefixUrl: "../www/openseadragon/images/",
+            tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
+          });
+          </script>
+    </div>  
 </body>
 </html>

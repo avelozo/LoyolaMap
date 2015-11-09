@@ -25,18 +25,22 @@ var overlay;
 USGSOverlay.prototype = new google.maps.OverlayView();
 
 //center of the map
-var myCenter=new google.maps.LatLng(41.9988543,-87.6556353);
+var myCenter=new google.maps.LatLng(42.0, -87.657838);
+
 //variable cointaining building information
 
 //may be useful on future
 var currentBuilding;
+
+ // This is the minimum zoom level that we'll allow
+   var minZoomLevel = 18;
 
 function initialize()
 {
   //set map properties
 var mapProp = {
   center:myCenter,
-  zoom:16,
+  zoom: minZoomLevel,
   disableDefaultUI: true,
   mapTypeId:google.maps.MapTypeId.ROADMAP
   };
@@ -92,7 +96,74 @@ for (var i = 0; i < markers.length; i++) {
   overlay = new USGSOverlay(bounds, srcImage, map);
 
 
+
+
+
+
+
+   var strictBounds = new google.maps.LatLngBounds(
+     new google.maps.LatLng(42.002866, -87.661490),
+     new google.maps.LatLng(41.998645, -87.655579)
+   );
+   // Listen for the dragend event
+   google.maps.event.addListener(map, 'dragend', function() {
+     if (strictBounds.contains(map.getCenter())) return;
+
+     // We're out of bounds - Move the map back within the bounds
+
+     var c = map.getCenter(),
+         x = c.lng(),
+         y = c.lat(),
+         maxX = strictBounds.getNorthEast().lng(),
+         maxY = strictBounds.getNorthEast().lat(),
+         minX = strictBounds.getSouthWest().lng(),
+         minY = strictBounds.getSouthWest().lat();
+
+     if (x < minX) x = minX;
+     if (x > maxX) x = maxX;
+     if (y < minY) y = minY;
+     if (y > maxY) y = maxY;
+
+     map.setCenter(new google.maps.LatLng(y, x));
+   });
+
+   // Limit the zoom level
+   google.maps.event.addListener(map, 'zoom_changed', function() {
+     if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
+   });
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function showBuilding(){

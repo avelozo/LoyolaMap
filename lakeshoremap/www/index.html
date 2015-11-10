@@ -27,5 +27,57 @@
           });
           </script>
     </div>  
+
+<!-- Temporary div to track the mouse position -->
+    <div id="test"></div>
+
+
+    <script type="text/javascript">
+ 
+viewerOpen.addHandler('canvas-click', function(event) {
+
+    // Temporary tracker for testing
+        var tracker = new OpenSeadragon.MouseTracker({
+                 element: viewerOpen.container,
+                  moveHandler: function(event) {
+                    var point = viewerOpen.viewport.pointFromPixel(event.position);
+                    document.getElementById("test").innerHTML = '<br><br>Viewport:<br>' + point.toString() ;
+        }});      
+         tracker.setTracking(true);  
+   // Temporary tracker end
+   
+
+            var webPoint = event.position;
+            var viewportPoint = viewerOpen.viewport.pointFromPixel(webPoint);
+            var imagePoint = viewerOpen.viewport.viewportToImageCoordinates(viewportPoint);
+            var zoom = viewerOpen.viewport.getZoom(true);
+            var imageZoom = viewerOpen.viewport.viewportToImageZoom(zoom);
+
+
+        $.getJSON("data/buildings.json", function(data){
+
+          $.each(data.buildings, function(i,item){
+            
+            // Verify if the clicked position is a building
+            if ((viewportPoint.x< item.xmax && viewportPoint.x> item.xmin) && (viewportPoint.y<item.ymax && viewportPoint.y> item.ymin)) {
+                // Open a new building as a dialog
+                $(":mobile-pagecontainer").pagecontainer("change", "buildings.html", {
+                  role:"dialog",
+                  changeHash: false
+                });
+            
+                $(document).on("pageshow", "#pagetwo", function( event ) {
+                  $("#buildingName").html(item.name);
+                  $("#buildingImages").html("<img id='buildingImg' src='"+ item.img + "''>");
+                  $("#buildingDescription").html(item.description);
+                });
+          
+              return false;
+            }
+          });
+        });
+});
+
+</script>
 </body>
 </html>

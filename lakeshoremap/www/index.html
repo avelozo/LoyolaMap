@@ -9,6 +9,12 @@
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script src="../www/openseadragon/openseadragon.min.js"></script>
         <link href="css/jquery.bxslider.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="css/waves.min.css" />
+        <link rel="stylesheet" href="css/nativedroid2.css" />
+        <script src="js/waves.min.js"></script>
+    <script src="js/nativedroid2.js"></script>
+    <script src="js/nd2settings.js"></script>
        
     <!-- bxSlider Javascript file -->
     <script src="js/jquery.bxslider.min.js"></script>
@@ -16,7 +22,10 @@
 <body> 
 
 <div data-role="page" id="home">
-  <div data-role="header">
+
+  <nd2-include data-src="panel.left.html"></nd2-include>
+  <div data-role="header" class="nd2-bg-500">
+    <a href="#leftpanel" class="ui-btn ui-btn-left"><i class="fa fa-bars"></i></a>
     <h1>Loyola Map</h1>
   </div>
 

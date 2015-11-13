@@ -8,6 +8,10 @@
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         <script src="../www/openseadragon/openseadragon.min.js"></script>
+        <link href="css/jquery.bxslider.css" rel="stylesheet" />
+       
+    <!-- bxSlider Javascript file -->
+    <script src="js/jquery.bxslider.min.js"></script>
     </head> 
 <body> 
 
@@ -17,10 +21,10 @@
   </div>
 
   <div id="mapContainer"> 
-      <!-- Opeanseadragon div- necessary to show the map -->
+     <!-- Opeanseadragon div- necessary to show the map -->
       <div id="openseadragon1" style="width: 600px; height: 800px;"></div>  
           <script type="text/javascript">
-          var viewerOpen = OpenSeadragon({
+           var viewerOpen = OpenSeadragon({
             id: "openseadragon1",
             prefixUrl: "../www/openseadragon/images/",
             tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
@@ -33,6 +37,20 @@
 
 
     <script type="text/javascript">
+
+
+
+    document.addEventListener("backbutton", function(e){
+       if($.mobile.activePage.is('#home')){
+           e.preventDefault();
+           navigator.app.exitApp();
+       }
+       else {
+           navigator.app.backHistory()
+       }
+    }, false);
+
+
  
 viewerOpen.addHandler('canvas-click', function(event) {
 
@@ -62,14 +80,14 @@ viewerOpen.addHandler('canvas-click', function(event) {
             if ((viewportPoint.x< item.xmax && viewportPoint.x> item.xmin) && (viewportPoint.y<item.ymax && viewportPoint.y> item.ymin)) {
                 // Open a new building as a dialog
                 $(":mobile-pagecontainer").pagecontainer("change", "buildings.html", {
-                  role:"dialog",
-                  changeHash: false
-                });
+                  changeHash: true,
+                  });
             
                 $(document).on("pageshow", "#pagetwo", function( event ) {
                   $("#buildingName").html(item.name);
-                  $("#buildingImages").html("<img id='buildingImg' src='"+ item.img + "''>");
+                  $("#bximages").html("<li><img src="+ item.img + "></li><li><img src="+ item.img + "></li>");
                   $("#buildingDescription").html(item.description);
+                  $('.bxslider').bxSlider();
                 });
           
               return false;
@@ -77,6 +95,7 @@ viewerOpen.addHandler('canvas-click', function(event) {
           });
         });
 });
+
 
 </script>
 </body>

@@ -1,11 +1,41 @@
 <html>
-<div data-role="page" id="pagetwo">
-  <div data-role="header">
-   <h2 id="buildingName"></h2>
-  </div>
-   <div data-role="main" class="ui-content">
-    <div id="buildingImages"></div>
-    <p id="buildingDescription"> </p>
-    <a href="#page1">Go to Page One</a>
-</div>
+	<head> 
+        <meta charset="utf-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <!-- JQM CSS  -->
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <!-- Custom css main-->
+        <link rel="stylesheet" href="../www/css/main.css">
+        <!-- bxSlider CSS file -->
+        <link href="css/jquery.bxslider.css" rel="stylesheet" />
+        <!-- Jquery Mobile -->
+        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <!-- jQuery library (served from Google) -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<!-- bxSlider Javascript file -->
+		<script src="js/jquery.bxslider.min.js"></script>
+    </head> 
+	<body>
+		<div data-role="page" id="pagetwo">
+			<div data-role="header">
+			  	 <h2 id="buildingName"></h2>
+			</div>
+		    <div data-role="main" class="ui-content">
+			     <ul class="bxslider" id="bximages">
+				</ul>
+		    	<p id="buildingDescription"> </p>
+		    	<a href="#home">Go to Page One</a>
+		    </div>
+			<script type="text/javascript">
+			 document.addEventListener("backbutton", function(e){
+		       if($.mobile.activePage.is('#home')){
+		           e.preventDefault();
+		           navigator.app.exitApp();
+		       }
+		       else {
+		           navigator.app.backHistory()
+		       }
+		    }, false);
+		   </script>
+	</body>
 </html>

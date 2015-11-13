@@ -79,10 +79,10 @@
       "address": "1125 W. Loyola Ave.",
       "description": "The gateway to our campus, Centennial Forum, is a convenient and affordable venue option for meetings and events. Event spaces include Bremner Lounge, Rambler Room, and the Mullady Theatre. The building allows for easy access to public transit and open floor plans.",
       "img": "img/8.1.jpg",
-      "position-x-max": "",
-      "position-x-min": "",
-      "position-y-max": "",
-      "position-y-min": ""
+      "xmax": "0.21",
+      "xmin": "0.11",
+      "ymax": "0.42",
+      "ymin": "0.34"
     },
     {
       "id": "9",

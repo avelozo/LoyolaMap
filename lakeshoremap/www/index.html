@@ -51,7 +51,7 @@
     }, false);
 
 
- 
+ var bxSlider= null;
 viewerOpen.addHandler('canvas-click', function(event) {
 
     // Temporary tracker for testing
@@ -83,12 +83,12 @@ viewerOpen.addHandler('canvas-click', function(event) {
                   changeHash: true,
                   });
             
-                $(document).on("pageshow", "#pagetwo", function( event ) {
+                $(document).on("pageshow", "#buildings", function( event ) {
                   $("#buildingName").html(item.name);
                   $("#bximages").html("<li><img src="+ item.img + "></li><li><img src="+ item.img + "></li>");
                   $("#buildingDescription").html(item.description);
-                  $('.bxslider').bxSlider();
-                });
+                  $('#bximages').bxSlider();
+               });
           
               return false;
             }

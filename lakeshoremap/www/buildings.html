@@ -17,14 +17,26 @@
     </head> 
 	<body>
 		<div data-role="page" id="buildings">
+  		<nd2-include data-src="panel.left.html"></nd2-include>
 			<div data-role="header">
+				<a href="#leftpanel" class="ui-btn ui-btn-left"><i class="fa fa-bars"></i></a>
 			  	 <h2 id="buildingName"></h2>
 			</div>
 		    <div data-role="main" class="ui-content">
-			     <ul class="bxslider" id="bximages">
-				</ul>
-		    	<p id="buildingDescription"> </p>
-		    	<a href="#home">Go to Page One</a>
+
+			<!-- Google Card !-->
+
+				<div class="nd2-card">
+
+					<div class="card-media">
+						<ul class="bxslider" id="bximages"></ul>
+					</div>
+
+					<div class="card-supporting-text">
+						   <p id="buildingDescription"></p>
+					</div>
+
+				</div>		 
 		    </div>
 			<script type="text/javascript">
 			 document.addEventListener("backbutton", function(e){
@@ -36,8 +48,6 @@
 		           navigator.app.backHistory()
 		       }
 		    }, false);
-
-			 
 		   </script>
 	</body>
 </html>

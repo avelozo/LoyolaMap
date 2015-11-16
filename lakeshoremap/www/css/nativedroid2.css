@@ -197,7 +197,7 @@ code {
 }
 
 .ui-panel.ui-panel-display-overlay.ui-panel-open {
-	z-index: 2000;
+	z-index: 2169;
 }
 
 .ui-page-theme-a a, html .ui-bar-a a, html .ui-body-a a, html body .ui-group-theme-a a {
@@ -602,9 +602,7 @@ code {
 	right: 26px;
 }
 
-.ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, html body .ui-group-theme-a .ui-btn:focus, html head+body .ui-btn.ui-btn-a:focus, .ui-page-theme-a .ui-focus, html .ui-bar-a .ui-focus, html .ui-body-a .ui-focus, html body .ui-group-theme-a .ui-focus, html head+body .ui-btn-a.ui-focus, html head+body .ui-body-a.ui-focus,
-.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit,
-.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+div#mapContainer {
 	box-shadow: none;
 	text-shadow: none;
 }

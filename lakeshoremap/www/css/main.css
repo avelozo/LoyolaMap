@@ -16,3 +16,11 @@
 #buildingDescription{
 	margin-top:5px;
 }
+
+.headerMenu{
+z-index: 9999;
+position: relative;
+}
+
+.mapContainer{
+z-index: 1;position: fixed;}

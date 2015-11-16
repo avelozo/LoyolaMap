@@ -23,33 +23,33 @@
 
 <div data-role="page" id="home">
 
-  <nd2-include data-src="panel.left.html"></nd2-include>
-  <div data-role="header">
-    <a href="#leftpanel" class="ui-btn ui-btn-left"><i class="fa fa-bars"></i></a>
-    <h1>Loyola Map</h1>
-  </div>
+   <div class="headerMenu">
+     <nd2-include data-src="panel.left.html"></nd2-include>
+      <div data-role="header">
+        <a href="#leftpanel" class="ui-btn ui-btn-left"><i class="fa fa-bars"></i></a>
+        <h1>Loyola Map</h1>
+      </div>
+    </div>
 
-  <div id="mapContainer"> 
-     <!-- Opeanseadragon div- necessary to show the map -->
-      <div id="openseadragon1" style="width: 600px; height: 800px;"></div>  
-          <script type="text/javascript">
-           var viewerOpen = OpenSeadragon({
-            id: "openseadragon1",
-            prefixUrl: "../www/openseadragon/images/",
-            tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
-          });
-          </script>
-    </div>  
-  </div>
+
+        <div class="mapContainer"> 
+           <!-- Opeanseadragon div- necessary to show the map -->
+            <div id="openseadragon1" style="width: 600px; height: 800px;"></div>  
+                <script type="text/javascript">
+                 var viewerOpen = OpenSeadragon({
+                  id: "openseadragon1",
+                  prefixUrl: "../www/openseadragon/images/",
+                  tileSources: "../www/openseadragon/maplsc2/dzc_output_images/lsc.xml"
+                });
+                </script>
+        </div>  
+  
 
 <!-- Temporary div to track the mouse position -->
     <div id="test"></div>
 
-
+ </div>
     <script type="text/javascript">
-
-
-
     document.addEventListener("backbutton", function(e){
        if($.mobile.activePage.is('#home')){
            e.preventDefault();

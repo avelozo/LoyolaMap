@@ -1,7 +1,7 @@
 /* Additional resources */
 
 /* Colors */
-/*@import url("nativedroid2.color.red.css");*/
+@import url("nativedroid2.color.loyola.css");
 /*@import url("nativedroid2.color.pink.css");*/
 /*@import url("nativedroid2.color.purple.css");*/
 /*@import url("nativedroid2.color.deep-purple.css");*/
@@ -18,13 +18,13 @@
 /*@import url("nativedroid2.color.deep-orange.css");*/
 /*@import url("nativedroid2.color.brown.css");*/
 /*@import url("nativedroid2.color.grey.css");*/
-@import url("nativedroid2.color.blue-grey.css");
+/*@import url("nativedroid2.color.blue-grey.css");*/
 
 
 @import url("flexboxgrid.min.css");
 @import url("material-design-iconic-font.min.css");
-@import url(//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic);
-@import url(//fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,700,900);
+@import url(http://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,700,900);
 
 body {
 	-webkit-transition: opacity 0.4s;

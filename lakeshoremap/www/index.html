@@ -15,6 +15,7 @@
         <script src="js/waves.min.js"></script>
         <script src="js/nativedroid2.js"></script>
         <script src="js/nd2settings.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
        
     <!-- bxSlider Javascript file -->
     <script src="js/jquery.bxslider.min.js"></script>
@@ -27,7 +28,8 @@
      <nd2-include data-src="panel.left.html"></nd2-include>
       <div data-role="header">
         <a href="#leftpanel" class="ui-btn ui-btn-left"><i class="fa fa-bars"></i></a>
-        <h1>Loyola Map</h1>
+        <h1 class="wow fadeIn" data-wow-delay='0.4s'>Loyola Map</h1>
+        <a href="#" class="ui-btn ui-btn-rigt wow fadeIn" data-wow-delay='1.2s'><i class="zmdi"></i></a>
       </div>
     </div>
 
@@ -105,6 +107,38 @@ viewerOpen.addHandler('canvas-click', function(event) {
           });
         });
 });
+
+function getBuildingNames(){
+
+var newJSON =  [];
+
+    $.getJSON("data/buildings.json", function(data){
+          $.each(data.buildings, function(i,item){
+            
+          var aux = {};  
+
+          aux.label = item.name;
+          aux.value = item.id;
+
+          newJSON.push(aux)
+    });       
+    });
+             
+              return newJSON;
+}
+
+
+
+        new $.nd2Search({
+          placeholder : "Search",
+          defaultIcon : "globe-alt",
+          source : getBuildingNames() ,
+          fn : function(result) {
+            console.log('--- Your custom handling ---');
+            console.log('you picked: ');
+            console.log(result);
+          }
+        });
 
 
 </script>

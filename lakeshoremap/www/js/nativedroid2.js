@@ -576,7 +576,7 @@
                         select: function(e, ui) {
                             if (typeof ui.item !== 'undefined' && typeof ui.item.value !== 'undefined') {
                                 if (typeof _self.options.fn === 'function') {
-                                    _self.options.fn(ui.item.value);
+                                    _self.options.fn(ui.item.x, ui.item.y);
                                     _self.hideSearch();
                                 }
                             }

@@ -32,7 +32,8 @@
         <a href="#" class="ui-btn ui-btn-rigt wow fadeIn" data-wow-delay='1.2s'><i class="zmdi"></i></a>
       </div>
     </div>
-
+<!-- Temporary div to track the mouse position -->
+  <div id="test"></div>
 
         <div class="mapContainer"> 
            <!-- Opeanseadragon div- necessary to show the map -->
@@ -58,15 +59,16 @@
            navigator.app.backHistory()
        }
     }, false);
- var bxSlider= null;
-viewerOpen.addHandler('canvas-click', function(event) {
+*/
+ 
+ viewerOpen.addHandler('canvas-click', function(event) {
 
     // Temporary tracker for testing
         var tracker = new OpenSeadragon.MouseTracker({
                  element: viewerOpen.container,
                   moveHandler: function(event) {
                     var point = viewerOpen.viewport.pointFromPixel(event.position);
-                    document.getElementById("test").innerHTML = '<br><br>Viewport:<br>' + viewerOpen.viewport.Point ;
+                    document.getElementById("test").innerHTML = '<br><br>Viewport:<br>' + point.toString() ; ;
         }});      
          tracker.setTracking(true);  
    // Temporary tracker end
@@ -138,6 +140,37 @@ var newJSON =  [];
               viewerOpen.addOverlay(img, point);
           }
         });
+
+
+
+
+
+          navigator.geolocation.getCurrentPosition(function geolocationSuccess(position) {
+            var x= Math.abs(((position.coords.latitude  - (-87.6601)) * 1.1/ 0.005166));
+            var y= Math.abs(((position.coords.longitude  - 42.0035) * 1.73)/-0.009223);
+            var img = document.createElement("img");
+              img.src = "img/marker.png";
+              img.id="marker";
+              var point = new OpenSeadragon.Point(x,y);
+              viewerOpen.addOverlay(img, point);
+             //  viewerOpen.viewport.panTo(new OpenSeadragon.Point(x+0.09, y+ 0.1)).zoomTo(3);
+                  alert('Latitude: '          + position.coords.latitude          + '\n' +
+                        'Longitude: '         + position.coords.longitude         + '\n' +
+                        'x '          + x          + '\n' +
+                        'y: '          + y         + '\n' +
+                        'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                        'Heading: '           + position.coords.heading           + '\n' +
+                        'Speed: '             + position.coords.speed             + '\n' +
+                        'Timestamp: '         + position.timestamp                + '\n');
+                  });
+
+
+
+
+
+
+
+
 </script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 
 
 function getBuildings(){
-
 var newJSON =  [];
 
     $.getJSON("data/buildings.json", function(data){
@@ -19,7 +18,7 @@ var newJSON =  [];
 
           newJSON.push(aux)
     });       
-    });
+   });
              
               return newJSON;
 }
@@ -29,12 +28,11 @@ function addMarker(x,y) {
               var img = document.createElement("img");
               img.src = "img/marker.png";
               img.id="marker";
-              var point = new OpenSeadragon.Point(x+0.03, y+ 0.03);
+              var point = new OpenSeadragon.Point(x+0.01, y+ 0.01);
               viewerOpen.viewport.panTo(new OpenSeadragon.Point(x+0.09, y+ 0.1)).zoomTo(3);
               viewerOpen.removeOverlay("marker");             
               viewerOpen.addOverlay(img, point);
           }
-
 
 function addSearch(){
 
@@ -50,8 +48,7 @@ function addSearch(){
    }
 
 
-   function clickTracker(buildings){
-
+function clickTracker(buildings){
   viewerOpen.addHandler('canvas-click', function(event) {
 
     // Temporary tracker for testing
@@ -63,43 +60,45 @@ function addSearch(){
         }});      
          tracker.setTracking(true);  
    // Temporary tracker end
-   
+        
+        if(event.quick){
 
             var webPoint = event.position;
             var viewportPoint = viewerOpen.viewport.pointFromPixel(webPoint);
-            var imagePoint = viewerOpen.viewport.viewportToImageCoordinates(viewportPoint);
-            var zoom = viewerOpen.viewport.getZoom(true);
-            var imageZoom = viewerOpen.viewport.viewportToImageZoom(zoom);
-
-
-          $.each(buildings, function(i,item){
+          
+            $.each(buildings, function(i,item){
             
             // Verify if the clicked position is a building
             if ((viewportPoint.x< item.xmax && viewportPoint.x> item.xmin) && (viewportPoint.y<item.ymax && viewportPoint.y> item.ymin)) {
+                
                 // Open a new building as a dialog
-                $(":mobile-pagecontainer").pagecontainer("change", "buildings.html", {
+                 $(":mobile-pagecontainer").pagecontainer("change", "buildings.html", {
                   changeHash: true,
                   });
             
-                $(document).on("pageshow", "#buildings", function( event ) {
+              $(document).on("pageshow", "#buildings", function( event ) {
+              
+                  var slider = $('#bximages').bxSlider();
+                  $("#bximages").html("");
                   $("#buildingName").html(item.label);
-                  $("#bximages").html("<li><img src="+ item.img + "></li><li><img src="+ item.img + "></li>");
+                  console.log(item);
+                    for (j in item.img){
+                          $("#bximages").append("<li><img src="+ item.img[j].url + "></li>");
+                        }
+                  slider.reloadSlider();
                   $("#buildingDescription").html(item.description);
-                  $('#bximages').bxSlider();
-               });
-          
-              return false;
-            }
+               }); 
+            }       
           });
-        });
+        }});
    }
 
 
    function getMyLocation(){
 
       navigator.geolocation.getCurrentPosition(function geolocationSuccess(position) {
-            var x= Math.abs(((position.coords.latitude  - (-87.6601)) * 1.1/ 0.005166));
-            var y= Math.abs(((position.coords.longitude  - 42.0035) * 1.73)/-0.009223);
+            var x= Math.abs((( position.coords.longitude    - (-87.6601)) * 1.1/ 0.005166));
+            var y= Math.abs(((position.coords.latitude - 42.0035) * 1.73)/-0.009223);
             addMarker(x,y);
                   alert('Latitude: '          + position.coords.latitude          + '\n' +
                         'Longitude: '         + position.coords.longitude         + '\n' +
@@ -110,7 +109,4 @@ function addSearch(){
                         'Speed: '             + position.coords.speed             + '\n' +
                         'Timestamp: '         + position.timestamp                + '\n');
                   });
-
-
-
-   }
+  }
